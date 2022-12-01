@@ -1,0 +1,25 @@
+#!/bin/sh
+if [ $$ -ne 1 ];then
+    echo "$0: must be run as PID 1"
+fi
+
+printf "Mounting /dev /proc /sys /dev/pts /dev/shm... "
+mount -t devtmpfs dev /dev
+mount -t proc proc /proc
+mount -t sysfs sys /sys
+mkdir /dev/pts
+mkdir /dev/shm
+mount -t devpts devpts /dev/pts
+mount -t tmpfs tmpfs /dev/shm -o rw
+echo "Done"
+
+for i in $(cat /proc/cmdline);do
+    case $i in
+        init=/init|init=init)
+            :;;
+        init=*)
+            exec ${i#init=};;
+    esac
+done
+
+exec busybox init

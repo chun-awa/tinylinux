@@ -1,0 +1,2 @@
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+export PS1="\[\033[95m\]\A\[\033[00m\] \[\033[96m\]\u@\h\[\033[00m\] \[\033[93m\]\w\[\033[00m\] > "

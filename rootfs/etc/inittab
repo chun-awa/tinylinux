@@ -1,0 +1,12 @@
+::sysinit:/etc/init.d/rc init
+::ctrlaltdel:/sbin/reboot
+::shutdown:/sbin/swapoff -a
+::shutdown:/bin/umount -a -r
+::restart:/sbin/init
+tty1::respawn:/bin/login -f root
+tty2::respawn:/bin/login -f root
+tty3::respawn:/bin/login -f root
+tty4::respawn:/bin/login -f root
+tty5::respawn:/bin/login -f root
+tty6::respawn:/bin/login -f root
+ttyS0::respawn:/bin/login -f root

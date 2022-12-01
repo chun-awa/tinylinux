@@ -1,0 +1,39 @@
+#!/bin/sh
+RESET=$(printf "\033[0m")
+RED=$(printf "\033[91m")
+YELLOW=$(printf "\033[93m")
+GREEN=$(printf "\033[92m")
+CYAN=$(printf "\033[96m")
+BLUE=$(printf "\033[94m")
+MAGENTA=$(printf "\033[95m")
+WHITE=$(printf "\033[97m")
+
+[ ${1} = halt ] && halt -f
+[ ${1} = poweroff ] && poweroff -f
+[ ${1} = reboot ] && reboot -f
+[ ${1} = init ] || exit
+
+echo "${CYAN}Welcome to ${RESET}${MAGENTA}Linux $(uname -r) $(uname -m)${RESET}${CYAN}!${RESET}"
+
+for i in /var/packages/*;do
+    tar -xf ${i} &
+done
+
+echo "${YELLOW}Setting Hostname...${RESET}"
+hostname -F /etc/hostname
+echo "${YELLOW}Starting Networking...${RESET}"
+for DEVICE in /sys/class/net/* ; do
+    echo "Found network device ${DEVICE##*/}"
+    ip link set ${DEVICE##*/} up
+    case ${DEVICE##*/} in
+    	lo)
+    		;;
+    	sit*)
+    		;;
+    	*)
+            udhcpc -b -i ${DEVICE##*/} -s /etc/init.d/dhcp.sh
+            ;;
+    esac
+done
+
+echo "Uptime:$(cat /proc/uptime|cut -d ' ' -f 1)s"
