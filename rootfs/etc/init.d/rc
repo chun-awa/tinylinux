@@ -15,8 +15,8 @@ WHITE=$(printf "\033[97m")
 
 echo "${CYAN}Welcome to ${RESET}${MAGENTA}Linux $(uname -r) $(uname -m)${RESET}${CYAN}!${RESET}"
 
-for i in /var/packages/*;do
-    tar -xf ${i} &
+for i in $(cat /etc/pkglist);do
+    pkg install ${i}
 done
 
 echo "${YELLOW}Setting Hostname...${RESET}"
