@@ -1,0 +1,29 @@
+#!/bin/sh
+cd /
+getpkg(){
+    repo=$(cat /etc/pkg/repo)
+    echo "Getting package list..."
+    wget "${repo}/$(uname -m)/pkglist.xz" -O /var/pkglist.xz
+    for i in $(xzcat /var/pkglist.xz);do
+        if [ "${1}.pkg" = "${i}" ];then
+            echo "Downloading ${i}..."
+            wget "${repo}/$(uname -m)/${i}" -P /var/packages
+            return
+        fi
+    done
+    echo "Package ${1} not found"
+    exit 1
+}
+installpkg(){
+    [ -e "/var/packages/${1}.pkg" ]||getpkg "${1}"
+    echo "Installing ${1}..."
+    tar -Jxf /var/packages/${1}.pkg
+}
+case "${1}" in
+    --help)
+        echo "${0} install <pkg>:Install a package"
+        ;;
+    install)
+        installpkg "${2}"
+        ;;
+esac
