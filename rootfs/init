@@ -1,7 +1,28 @@
-#!/bin/sh
+#!/bin/ash
 if [ $$ -ne 1 ];then
     echo "$0: must be run as PID 1"
 fi
+
+printf "Decompressing Busybox... "
+cd /bin
+unxz busybox.xz
+busybox rm ash unxz
+cd /
+echo "Done"
+
+printf "Installing Busybox... "
+cd /bin
+for i in $(busybox --list);do
+    busybox ln -s busybox ${i}
+done
+cd /
+echo "Done"
+
+printf "Decompressing musl libc... "
+cd /lib
+unxz ld-musl-x86_64.so.1.xz
+cd /
+echo "Done"
 
 printf "Mounting /dev /proc /sys /dev/pts /dev/shm... "
 mount -t devtmpfs dev /dev
