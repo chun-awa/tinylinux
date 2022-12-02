@@ -8,11 +8,6 @@ BLUE=$(printf "\033[94m")
 MAGENTA=$(printf "\033[95m")
 WHITE=$(printf "\033[97m")
 
-[ ${1} = halt ] && halt -f
-[ ${1} = poweroff ] && poweroff -f
-[ ${1} = reboot ] && reboot -f
-[ ${1} = init ] || exit
-
 echo "${CYAN}Welcome to ${RESET}${MAGENTA}Linux $(uname -r) $(uname -m)${RESET}${CYAN}!${RESET}"
 
 echo "${YELLOW}Setting Hostname...${RESET}"

@@ -1,4 +1,4 @@
-::sysinit:/etc/init.d/rc init
+::sysinit:/etc/init.d/rc
 ::ctrlaltdel:/sbin/reboot
 ::shutdown:/sbin/swapoff -a
 ::shutdown:/bin/umount -a -r
