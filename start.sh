@@ -11,7 +11,7 @@ if [ -e /dev/kvm ];then
 else
 	kvm=
 fi
-cmdline="vga=ask"
+cmdline="quiet vga=ask"
 smp=4
 memory=256
 if [ "${DISPLAY}" ];then

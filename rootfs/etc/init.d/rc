@@ -26,5 +26,9 @@ for DEVICE in /sys/class/net/* ; do
             ;;
     esac
 done
+echo "Installing Packages..."
+for i in $(cat /etc/pkglist);do
+	pkg install "${i}"
+done
 
 echo "Uptime:$(cat /proc/uptime|cut -d ' ' -f 1)s"
