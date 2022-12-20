@@ -1,20 +1,14 @@
 #!/bin/sh
-RESET=$(printf "\033[0m")
-RED=$(printf "\033[91m")
-YELLOW=$(printf "\033[93m")
-GREEN=$(printf "\033[92m")
-CYAN=$(printf "\033[96m")
-BLUE=$(printf "\033[94m")
-MAGENTA=$(printf "\033[95m")
-WHITE=$(printf "\033[97m")
+. /etc/init.d/rc.lib
 
-echo "${CYAN}Welcome to ${RESET}${MAGENTA}Linux $(uname -r) $(uname -m)${RESET}${CYAN}!${RESET}"
+echo "${YELLOW}Welcome to Linux!${RESET}"
+log_info "Linux Kernel Version:$(uname -r)"
 
-echo "${YELLOW}Setting Hostname...${RESET}"
+log "Setting Hostname..."
 hostname -F /etc/hostname
-echo "${YELLOW}Starting Networking...${RESET}"
+log "Starting Networking..."
 for DEVICE in /sys/class/net/* ; do
-    echo "Found network device ${DEVICE##*/}"
+    log "Found network device ${DEVICE##*/}"
     ip link set ${DEVICE##*/} up
     case ${DEVICE##*/} in
     	lo)
@@ -26,9 +20,9 @@ for DEVICE in /sys/class/net/* ; do
             ;;
     esac
 done
-echo "Installing Packages..."
+log "Installing Packages..."
 for i in $(cat /etc/pkglist);do
 	pkg install "${i}"
 done
 
-echo "Uptime:$(cat /proc/uptime|cut -d ' ' -f 1)s"
+log_info "Uptime:$(cat /proc/uptime|cut -d ' ' -f 1)s"
