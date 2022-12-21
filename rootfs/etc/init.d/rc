@@ -16,13 +16,13 @@ for DEVICE in /sys/class/net/* ; do
     	sit*)
     		;;
     	*)
-            udhcpc -b -i ${DEVICE##*/} -s /etc/init.d/dhcp.sh
+            udhcpc -b -i ${DEVICE##*/} -s /etc/init.d/dhcp.sh &
             ;;
     esac
 done
 log "Installing Packages..."
 for i in $(cat /etc/pkglist);do
-	pkg install "${i}"
+	pkg install "${i}" &
 done
 
 log_info "Uptime:$(cat /proc/uptime|cut -d ' ' -f 1)s"
