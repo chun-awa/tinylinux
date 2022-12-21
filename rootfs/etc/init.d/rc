@@ -16,7 +16,7 @@ for DEVICE in /sys/class/net/* ; do
     	sit*)
     		;;
     	*)
-            udhcpc -b -i ${DEVICE##*/} -s /etc/init.d/dhcp.sh &
+            udhcpc -b -i ${DEVICE##*/} -s /etc/init.d/dhcp.sh >/dev/null 2>&1 &
             ;;
     esac
 done
