@@ -8,7 +8,7 @@ log "Setting Hostname..."
 hostname -F /etc/hostname
 log "Starting Networking..."
 for DEVICE in /sys/class/net/* ; do
-    log "Found network device ${DEVICE##*/}"
+    log_info "Found network device ${DEVICE##*/}"
     ip link set ${DEVICE##*/} up
     case ${DEVICE##*/} in
     	lo)
@@ -16,7 +16,10 @@ for DEVICE in /sys/class/net/* ; do
     	sit*)
     		;;
     	*)
+			printf "DHCP..."
             udhcpc -b -i ${DEVICE##*/} -s /etc/init.d/dhcp.sh >/dev/null 2>&1 &
+			progress $!
+            wait
             ;;
     esac
 done
@@ -24,5 +27,6 @@ log "Installing Packages..."
 for i in $(cat /etc/pkglist);do
 	pkg install "${i}" &
 done
+wait
 
 log_info "Uptime:$(cat /proc/uptime|cut -d ' ' -f 1)s"

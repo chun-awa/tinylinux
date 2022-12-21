@@ -1,27 +1,50 @@
 #!/bin/sh
+RESET=$(printf "\033[0m")
+RED=$(printf "\033[91m")
+YELLOW=$(printf "\033[93m")
+GREEN=$(printf "\033[92m")
+CYAN=$(printf "\033[96m")
+BLUE=$(printf "\033[94m")
+MAGENTA=$(printf "\033[95m")
+WHITE=$(printf "\033[97m")
+log(){
+	echo "${GREEN}=>${RESET} ${WHITE}${1}${RESET}"
+}
+log_info(){
+	echo "${CYAN}=>${RESET} ${WHITE}${1}${RESET}"
+}
+log_error(){
+	echo "${RED}=>${RESET} ${WHITE}${1}${RESET}"
+}
 cd /
 getpkg(){
     repo=$(cat /etc/pkg/repo)
-    echo "Getting package list..."
-    wget "${repo}/$(uname -m)/pkglist.xz" -O /var/pkglist.xz
+    log_info "Getting package list..."
+    if ! wget "${repo}/$(uname -m)/pkglist.xz" -O /var/pkglist.xz;then
+    	log_error "Failed to Download Package List"
+    	exit 1
+    fi
     for i in $(xzcat /var/pkglist.xz);do
         if [ "${1}.pkg" = "${i}" ];then
-            echo "Downloading ${i}..."
-            wget "${repo}/$(uname -m)/${i}" -P /var/packages
+            log_info "Downloading ${1}..."
+            if ! wget "${repo}/$(uname -m)/${i}" -P /var/packages;then
+				log_error "Failed to Download ${1}"
+				exit 1
+            fi
             return
         fi
     done
-    echo "Package ${1} not found"
+    log_error "Package ${1} not found"
     exit 1
 }
 installpkg(){
     [ -e "/var/packages/${1}.pkg" ]||getpkg "${1}"
-    echo "Installing ${1}..."
+    log "Installing ${1}..."
     tar -Jxf /var/packages/${1}.pkg
 }
 case "${1}" in
     --help)
-        echo "${0} install <pkg>:Install a package"
+        log_info "${0} install <pkg>:Install a package"
         ;;
     install)
         installpkg "${2}"

@@ -1,12 +1,12 @@
 #!/bin/sh
-RESET=     '\e[0m'
-RED=       '\e[91m'
-YELLOW=    '\e[93m'
-GREEN=     '\e[92m'
-CYAN=      '\e[96m'
-BLUE=      '\e[94m'
-MAGENTA=   '\e[95m'
-WHITE=     '\e[97m'
+RESET=$(printf "\033[0m")
+RED=$(printf "\033[91m")
+YELLOW=$(printf "\033[93m")
+GREEN=$(printf "\033[92m")
+CYAN=$(printf "\033[96m")
+BLUE=$(printf "\033[94m")
+MAGENTA=$(printf "\033[95m")
+WHITE=$(printf "\033[97m")
 log(){
 	echo "${GREEN}=>${RESET} ${WHITE}${1}${RESET}"
 }
@@ -15,4 +15,14 @@ log_info(){
 }
 log_error(){
 	echo "${RED}=>${RESET} ${WHITE}${1}${RESET}"
+}
+progress(){
+	while [ -e "/proc/${1}" ];do
+		for i in '|' '/' '-' '\';do
+			printf "${i}"
+			usleep 1000
+			printf "\033[D"
+		done
+	done
+	echo
 }
