@@ -1,4 +1,5 @@
 ncurses
+gettext
 bash
 curl
 nano
@@ -8,3 +9,10 @@ neofetch
 libevent
 tmux
 micro
+xlib
+libxcvt
+pixman
+freetype
+expat
+fontconfig
+xserver

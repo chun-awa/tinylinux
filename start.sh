@@ -33,7 +33,7 @@ else
 fi
 cmdline="quiet vga=${vga}"
 smp=4
-memory=256
+memory=512
 if [ "${DISPLAY}" ];then
     display="gtk"
     serial="stdio"
