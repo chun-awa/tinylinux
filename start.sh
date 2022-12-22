@@ -11,7 +11,27 @@ if [ -e /dev/kvm ];then
 else
 	kvm=
 fi
-cmdline="quiet vga=ask"
+if [ "${DISPLAY}" ];then
+	vga=0x344
+else
+	lines=$(tput lines)
+	if [ ${lines} -gt 60 ];then
+		vga=0xf07
+	elif [ ${lines} -gt 50 ];then
+		vga=0xf01
+	elif [ ${lines} -gt 43 ];then
+		vga=0xf02
+	elif [ ${lines} -gt 34 ];then
+		vga=0xf06
+	elif [ ${lines} -gt 30 ];then
+		vga=0xf05
+	elif [ ${lines} -gt 28 ];then
+		vga=0xf03
+	else
+		vga=0xf00
+    fi
+fi
+cmdline="quiet vga=${vga}"
 smp=4
 memory=256
 if [ "${DISPLAY}" ];then
