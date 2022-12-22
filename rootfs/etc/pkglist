@@ -2,3 +2,5 @@ ncurses
 bash
 nano
 neofetch
+libevent
+tmux
