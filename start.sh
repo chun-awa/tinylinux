@@ -17,6 +17,7 @@ memory=256
 if [ "${DISPLAY}" ];then
     display="gtk"
     serial="stdio"
+    cmdline+=" console=ttyS0"
 else
     display="curses"
     serial="null"
