@@ -1,6 +1,8 @@
 ncurses
 bash
+curl
 nano
 neofetch
 libevent
 tmux
+micro
