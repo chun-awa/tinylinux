@@ -2,6 +2,8 @@ ncurses
 bash
 curl
 nano
+zlib
+dropbear
 neofetch
 libevent
 tmux
