@@ -9,6 +9,13 @@ neofetch
 libevent
 tmux
 micro
+openssl
+libdrm
+libxdmcp
+libxau
+libbzip2
+libpng
+brotli
 xlib
 libxcvt
 pixman
