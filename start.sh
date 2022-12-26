@@ -7,9 +7,12 @@ fi
 kernel=vmlinuz-4.9.330
 initrd=rootfs.bz2
 if [ -e /dev/kvm ];then
-    kvm="-enable-kvm"
+	kvm="-enable-kvm"
 else
 	kvm=
+fi
+if [ "${1}" = "tcg" ];then
+	kvm=  
 fi
 if [ "${DISPLAY}" ];then
 	vga=0x344
@@ -36,11 +39,8 @@ smp=4
 memory=512
 if [ "${DISPLAY}" ];then
     display="gtk"
-    serial="stdio"
-    cmdline+=" console=ttyS0"
 else
     display="curses"
-    serial="null"
 fi
 
 qemu-system-x86_64 ${kvm}\
@@ -49,5 +49,4 @@ qemu-system-x86_64 ${kvm}\
     -m ${memory}\
     -append "${cmdline}"\
     -smp ${smp}\
-    -display ${display}\
-    -serial ${serial}
+    -display ${display}
