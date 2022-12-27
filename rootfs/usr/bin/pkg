@@ -16,31 +16,33 @@ log_info(){
 log_error(){
 	echo "${RED}=>${RESET} ${WHITE}${1}${RESET}"
 }
-cd /
-getpkg(){
-    repo=$(cat /etc/pkg/repo)
-    log_info "Getting package list..."
-    if ! wget "${repo}/$(uname -m)/pkglist.xz" -O /var/pkglist.xz;then
-    	log_error "Failed to Download Package List"
-    	exit 1
-    fi
-    for i in $(xzcat /var/pkglist.xz);do
-        if [ "${1}.pkg" = "${i}" ];then
-            log_info "Downloading ${1}..."
-            if ! wget "${repo}/$(uname -m)/${i}" -P /var/packages;then
-				log_error "Failed to Download ${1}"
-				exit 1
-            fi
-            return
-        fi
-    done
-    log_error "Package ${1} not found"
-    exit 1
+progress(){
+	while [ -e "/proc/${1}" ];do
+		for i in '|' '/' '-' '\';do
+			printf "${i}"
+			usleep 1000
+			printf "\033[D"
+		done
+	done
+	echo
+}
+decompress(){
+    case "${1}" in
+        *.tbz|*.bz2) bzip2 -d ;;
+        *.lz)        lzip -dc ;;
+        *.tar)       cat      ;;
+        *.tgz|*.gz)  gzip -d  ;;
+        *.xz|*.txz)  xz -dc   ;;
+    esac<"${1}"
 }
 installpkg(){
-    [ -e "/var/packages/${1}.pkg" ]||getpkg "${1}"
+    if ! [ -e /var/packages/"${1}".tar.* ];then
+    	log_error "Package ${1} not found"
+    fi
     log "Installing ${1}..."
-    tar -Jxf /var/packages/${1}.pkg
+    decompress /var/packages/"${1}".tar.*>"/tmp/${1}.tar"
+	cd /
+    tar -xf "/tmp/${1}.tar"
 }
 case "${1}" in
     --help)
