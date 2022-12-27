@@ -1,5 +1,6 @@
 ncurses
 gettext
+openssl
 bash
 curl
 nano
@@ -9,18 +10,4 @@ neofetch
 libevent
 tmux
 micro
-openssl
-libdrm
-libxdmcp
-libxau
-libbzip2
-libpng
-brotli
-xlib
-libxcvt
-pixman
-freetype
-expat
-fontconfig
-xserver
-xf86-video-fbdev
+scc

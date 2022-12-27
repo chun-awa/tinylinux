@@ -49,4 +49,5 @@ qemu-system-x86_64 ${kvm}\
     -m ${memory}\
     -append "${cmdline}"\
     -smp ${smp}\
-    -display ${display}
+    -display ${display}\
+	-vga qxl
