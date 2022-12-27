@@ -4,17 +4,6 @@ if [ $$ -ne 1 ];then
     log_error "$0: must be run as PID 1"
 fi
 
-log "Decompressing Busybox... "
-cd /bin
-unxz busybox.xz
-busybox rm ash unxz
-
-log "Installing Busybox..."
-for i in $(busybox --list);do
-    busybox ln -s busybox ${i}
-done
-cd /
-
 log "Mounting pseudo filesystems..."
 mount -t devtmpfs dev /dev
 mount -t proc proc /proc
