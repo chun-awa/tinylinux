@@ -23,10 +23,14 @@ for DEVICE in /sys/class/net/* ; do
             ;;
     esac
 done
+log "Installing Core Packages..."
+for i in $(cat /etc/pkglist_core);do
+    pkg install "${i}"
+done
 log "Installing Packages..."
 for i in $(cat /etc/pkglist);do
 	pkg install "${i}" &
 done
 wait
 
-log_info "Uptime:$(cat /proc/uptime|cut -d ' ' -f 1)s"
+log_info "Boot completed in $(cat /proc/uptime|cut -d ' ' -f 1)s"
