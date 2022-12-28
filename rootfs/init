@@ -1,5 +1,6 @@
 #!/bin/ash
 . /etc/init.d/rc.lib
+. /etc/rc.conf
 if [ $$ -ne 1 ];then
     log_error "$0: must be run as PID 1"
 fi
@@ -28,4 +29,4 @@ for i in $(cat /proc/cmdline);do
     esac
 done
 
-exec busybox init
+exec ${INIT}
