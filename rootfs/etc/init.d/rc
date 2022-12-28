@@ -1,36 +1,15 @@
 #!/bin/sh
 . /etc/init.d/rc.lib
+. /etc/rc.conf
 
 echo "${YELLOW}Welcome to Linux!${RESET}"
 log_info "Linux Kernel Version:$(uname -r)"
 
-log "Setting Hostname..."
-hostname -F /etc/hostname
-log "Starting Networking..."
-for DEVICE in /sys/class/net/* ; do
-    log_info "Found network device ${DEVICE##*/}"
-    ip link set ${DEVICE##*/} up
-    case ${DEVICE##*/} in
-    	lo)
-    		;;
-    	sit*)
-    		;;
-    	*)
-			printf "DHCP..."
-            udhcpc -b -i ${DEVICE##*/} -s /etc/init.d/dhcp.sh >/dev/null 2>&1 &
-			progress $!
-            wait
-            ;;
-    esac
+log_info "Boot stage completed in $(cat /proc/uptime|cut -d ' ' -f 1)s"
+
+log "Starting Services..."
+for i in $SERVICES;do
+    /var/services/${i} start
 done
-log "Installing Core Packages..."
-for i in $(cat /etc/pkglist_core);do
-    pkg install "${i}"
-done
-log "Installing Packages..."
-for i in $(cat /etc/pkglist);do
-	pkg install "${i}" &
-done
-wait
 
 log_info "Boot completed in $(cat /proc/uptime|cut -d ' ' -f 1)s"

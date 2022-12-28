@@ -8,21 +8,21 @@ BLUE=$(printf "\033[94m")
 MAGENTA=$(printf "\033[95m")
 WHITE=$(printf "\033[97m")
 log(){
-	echo "${GREEN}=>${RESET} ${WHITE}${1}${RESET}"
+    echo "${GREEN}=>${RESET} ${WHITE}${1}${RESET}"
 }
 log_info(){
-	echo "${CYAN}=>${RESET} ${WHITE}${1}${RESET}"
+    echo "${CYAN}=>${RESET} ${WHITE}${1}${RESET}"
 }
 log_error(){
-	echo "${RED}=>${RESET} ${WHITE}${1}${RESET}"
+    echo "${RED}=>${RESET} ${WHITE}${1}${RESET}"
 }
 progress(){
-	while [ -e "/proc/${1}" ];do
-		for i in '|' '/' '-' '\';do
-			printf "${i}"
-			usleep 1000
-			printf "\033[D"
-		done
-	done
-	echo
+    while [ -e "/proc/${1}" ];do
+        for i in '|' '/' '-' '\';do
+            printf "${i}"
+            usleep 1000
+            printf "\033[D"
+        done
+    done
+    echo
 }
