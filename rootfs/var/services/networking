@@ -1,0 +1,30 @@
+#!/bin/sh
+. /etc/init.d/rc.lib
+
+case "${1}" in
+    start)
+        log "Starting Networking..."
+        for DEVICE in /sys/class/net/*;do
+            log_info "Found network device ${DEVICE##*/}"
+            ip link set ${DEVICE##*/} up
+            case ${DEVICE##*/} in
+                lo) ;;
+                sit*) ;;
+                *)
+                    udhcpc -b -i ${DEVICE##*/} -s /etc/init.d/dhcp.sh
+                    log "Started Network on ${DEVICE##*/}"
+                    ;;
+            esac
+        done
+        ;;
+    stop)
+        log "Stopping Networking..."
+        for DEVICE in /sys/class/net/*;do
+            ip link set ${DEVICE##*/} down
+        done
+        ;;
+    restart)
+        "${0}" stop
+        "${0}" start
+        ;;
+esac
