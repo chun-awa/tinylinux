@@ -1,0 +1,17 @@
+#!/bin/sh
+. /etc/init.d/rc.lib
+
+case "${1}" in
+    start)
+        log "Starting telnetd..."
+        telnetd
+        ;;
+    stop)
+        log "Stopping telnetd..."
+        pkill telnetd
+        ;;
+    restart)
+        "${0}" stop
+        "${0}" start
+        ;;
+esac
