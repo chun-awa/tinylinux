@@ -1,4 +1,4 @@
-#!/bin/ash
+#!/bin/sh
 . /etc/init.d/rc.lib
 . /etc/rc.conf
 if [ $$ -ne 1 ];then
