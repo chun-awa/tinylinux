@@ -50,4 +50,3 @@ qemu-system-x86_64 ${kvm}\
     -append "${cmdline}"\
     -smp ${smp}\
     -display ${display}\
-	-vga qxl
