@@ -2,6 +2,8 @@ ncurses
 gettext
 openssl
 bash
+file
+tree
 curl
 nano
 zlib
@@ -10,6 +12,4 @@ neofetch
 libevent
 tmux
 micro
-scc
-tcc
 terminus-font
