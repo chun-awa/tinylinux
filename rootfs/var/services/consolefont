@@ -1,0 +1,12 @@
+#!/bin/sh
+. /etc/init.d/rc.lib
+. /etc/rc.conf
+
+case "${1}" in
+    start)
+        log "Setting Console Font..."
+        for i in $(seq 1 6);do
+            setfont -C "/dev/tty${i}" "${CONSOLEFONT}"
+        done
+        ;;
+esac
