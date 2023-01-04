@@ -10,21 +10,21 @@ if [ -e /dev/kvm ];then
     kvm="-enable-kvm"
 fi
 vga=0x344
-cmdline="quiet"
+cmdline=""
 smp=4
 memory=1024
 for i in "${@}";do
     case "${i}" in
-    	tcg)
-    		kvm=
-    		;;
-		vga_ask)
-			vga=ask
-			;;
-    	*)
-			echo "Unknown option:${i}"
-			exit 1
-			;;
+        tcg)
+            kvm=
+            ;;
+        vga_ask)
+            vga=ask
+            ;;
+        *)
+            echo "Unknown option:${i}"
+            exit 1
+            ;;
     esac
 done
 cmdline+=" vga=${vga}"
