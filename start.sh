@@ -29,7 +29,7 @@ for i in "${@}";do
 done
 cmdline+=" vga=${vga}"
 echo "Starting QEMU..."
-qemu-system-x86_64 "${kvm}" \
+qemu-system-x86_64 ${kvm} \
     -kernel "${kernel}" \
     -initrd "${initrd}" \
     -m "${memory}" \
