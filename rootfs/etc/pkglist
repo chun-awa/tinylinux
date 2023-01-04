@@ -1,6 +1,8 @@
 ncurses
 openssl
 bash
+zlib
+libbzip2
 file
 tree
 nano
