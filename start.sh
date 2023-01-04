@@ -6,31 +6,20 @@ fi
 
 kernel=vmlinuz-4.9.330
 initrd=rootfs.cpio
-[ -e /dev/kvm ]&&kvm="-enable-kvm"
+if [ -e /dev/kvm ];then
+    kvm="-enable-kvm"
+fi
 vga=0x344
+cmdline="quiet"
+smp=4
+memory=512
 for i in "${@}";do
     case "${i}" in
     	tcg)
     		kvm=
     		;;
-		curses)
-			display="-display curses"
-			lines=$(tput lines)
-			if [ ${lines} -gt 60 ];then
-			    vga=0xf07
-			elif [ ${lines} -gt 50 ];then
-			    vga=0xf01
-			elif [ ${lines} -gt 43 ];then
-			    vga=0xf02
-			elif [ ${lines} -gt 34 ];then
-			    vga=0xf06
-			elif [ ${lines} -gt 30 ];then
-			    vga=0xf05
-			elif [ ${lines} -gt 28 ];then
-			    vga=0xf03
-			else
-			    vga=0xf00
-			fi
+		vga_ask)
+			vga=ask
 			;;
     	*)
 			echo "Unknown option:${i}"
@@ -38,15 +27,11 @@ for i in "${@}";do
 			;;
     esac
 done
-cmdline="quiet vga=${vga}"
-smp=4
-memory=512
+cmdline+=" vga=${vga}"
 echo "Starting QEMU..."
-qemu-system-x86_64\
-	${kvm}\
-    -kernel "${kernel}"\
-    -initrd "${initrd}"\
-    -m ${memory}\
-    -append "${cmdline}"\
-    -smp ${smp}\
-    "${display}"
+qemu-system-x86_64 "${kvm}" \
+    -kernel "${kernel}" \
+    -initrd "${initrd}" \
+    -m "${memory}" \
+    -append "${cmdline}" \
+    -smp "${smp}" \
