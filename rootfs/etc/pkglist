@@ -1,8 +1,11 @@
 ncurses
 openssl
-bash
 zlib
 libbzip2
+bash
+curl
+lua
+lzip
 file
 tree
 nano

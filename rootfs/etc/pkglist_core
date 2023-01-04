@@ -1,3 +1,4 @@
-lzip
-curl
-lua
+base-filesystem
+init
+busybox
+musl

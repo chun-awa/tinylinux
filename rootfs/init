@@ -1,11 +1,20 @@
-#!/bin/sh
-. /etc/init.d/rc.lib
-. /etc/rc.conf
-if [ $$ -ne 1 ];then
-    log_error "$0: must be run as PID 1"
-fi
+#!/bin/busybox sh
+decompress(){
+    case "${1}" in
+        *.tbz|*.bz2) bzip2 -d ;;
+        *.lz)        lzip -dc ;;
+        *.tar)       cat      ;;
+        *.tgz|*.gz)  gzip -d  ;;
+        *.xz|*.txz)  xz -dc   ;;
+    esac<"${1}"
+}
 
-log "Mounting pseudo filesystems..."
+echo "Installing Busybox..."
+for i in $(busybox --list);do
+    busybox ln -s busybox /bin/$i
+done
+
+echo "Mounting pseudo filesystems..."
 mount -t devtmpfs dev /dev
 mount -t proc proc /proc
 mount -t sysfs sys /sys
@@ -18,15 +27,27 @@ ln -s fd/0 /dev/stdin
 ln -s fd/1 /dev/stdout
 ln -s fd/2 /dev/stderr
 
-log_info "init stage completed in $(cat /proc/uptime|cut -d ' ' -f 1)s"
+echo "Mounting tmpfs..."
+mount -t tmpfs -o defaults,size=512M tmpfs /mnt/tmpfs
 
-for i in $(cat /proc/cmdline);do
-    case $i in
-        init=/init|init=init)
-            :;;
-        init=*)
-            exec ${i#init=};;
-    esac
+echo "Installing packages to new root..."
+cd /mnt/tmpfs
+for i in $(cat /etc/pkglist_core);do
+    decompress /var/packages/${i}.tar.*>/tmp/${i}.tar
+    tar -xf /tmp/${i}.tar
+    echo "$i done"
 done
+for i in $(cat /etc/pkglist);do
+    {
+        decompress /var/packages/${i}.tar.*>/tmp/${i}.tar
+        tar -xf /tmp/${i}.tar
+        echo "$i done"
+    } &
+done
+wait
 
-exec ${INIT}
+echo "initramfs stage completed in $(cat /proc/uptime|cut -d ' ' -f 1)s"
+
+echo "Switching root..."
+exec switch_root /mnt/tmpfs /init
+
