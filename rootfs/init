@@ -9,26 +9,32 @@ decompress(){
     esac<"${1}"
 }
 
+busybox dmesg -n 1
 echo "Installing Busybox..."
 for i in $(busybox --list);do
     busybox ln -s busybox /bin/$i
 done
 
-echo "Mounting pseudo filesystems..."
-mount -t devtmpfs dev /dev
-mount -t proc proc /proc
-mount -t sysfs sys /sys
-mkdir /dev/pts
-mkdir /dev/shm
-mount -t devpts devpts /dev/pts
-mount -t tmpfs tmpfs /dev/shm -o rw
-ln -s /proc/self/fd /dev/fd
-ln -s fd/0 /dev/stdin
-ln -s fd/1 /dev/stdout
-ln -s fd/2 /dev/stderr
-
 echo "Mounting tmpfs..."
 mount -t tmpfs -o defaults,size=512M tmpfs /mnt/tmpfs
+echo "Mounting pseudo filesystems..."
+mkdir /mnt/tmpfs/dev
+mkdir /mnt/tmpfs/proc
+mkdir /mnt/tmpfs/sys
+mount -t devtmpfs dev /mnt/tmpfs/dev
+mount -t proc proc /mnt/tmpfs/proc
+mount -t sysfs sys /mnt/tmpfs/sys
+mkdir /mnt/tmpfs/dev/pts
+mkdir /mnt/tmpfs/dev/shm
+mount -t devpts devpts /mnt/tmpfs/dev/pts
+mount -t tmpfs tmpfs /mnt/tmpfs/dev/shm -o rw
+ln -s /proc/self/fd /mnt/tmpfs/dev/fd
+ln -s fd/0 /mnt/tmpfs/dev/stdin
+ln -s fd/1 /mnt/tmpfs/dev/stdout
+ln -s fd/2 /mnt/tmpfs/dev/stderr
+mount --bind /mnt/tmpfs/dev /dev
+mount --bind /mnt/tmpfs/proc /proc
+mount --bind /mnt/tmpfs/sys /sys
 
 echo "Installing packages to new root..."
 cd /mnt/tmpfs
@@ -50,4 +56,3 @@ echo "initramfs stage completed in $(cat /proc/uptime|cut -d ' ' -f 1)s"
 
 echo "Switching root..."
 exec switch_root /mnt/tmpfs /bin/busybox init
-
