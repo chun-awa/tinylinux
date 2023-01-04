@@ -1,10 +1,8 @@
 ncurses
-gettext
 openssl
 bash
 file
 tree
-curl
 nano
 neofetch
 libevent
