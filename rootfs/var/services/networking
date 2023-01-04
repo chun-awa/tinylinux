@@ -11,7 +11,7 @@ case "${1}" in
                 lo) ;;
                 sit*) ;;
                 *)
-                    udhcpc -b -i ${DEVICE##*/} -s /etc/init.d/dhcp.sh
+                    udhcpc -b -i ${DEVICE##*/} -s /var/services/dhcp
                     log "Started Network on ${DEVICE##*/}"
                     ;;
             esac
