@@ -12,7 +12,7 @@ fi
 vga=0x344
 cmdline="quiet"
 smp=4
-memory=512
+memory=1024
 for i in "${@}";do
     case "${i}" in
     	tcg)
