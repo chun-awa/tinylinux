@@ -49,5 +49,5 @@ wait
 echo "initramfs stage completed in $(cat /proc/uptime|cut -d ' ' -f 1)s"
 
 echo "Switching root..."
-exec switch_root /mnt/tmpfs /init
+exec switch_root /mnt/tmpfs /bin/busybox init
 
