@@ -6,8 +6,6 @@ file
 tree
 curl
 nano
-zlib
-dropbear
 neofetch
 libevent
 tmux
