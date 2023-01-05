@@ -44,6 +44,10 @@ mount --bind /mnt/tmpfs/sys /sys
 log "Installing packages to new root..."
 cd /mnt/tmpfs
 printf "${MAGENTA}"
+for i in $(cat /etc/pkglist_core);do
+    tar -Jxf /var/packages/${i}.tar.*
+    printf "$i "
+done
 for i in $(cat /etc/pkglist);do
     {
         tar -Jxf /var/packages/${i}.tar.*
