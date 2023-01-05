@@ -1,16 +1,4 @@
 busybox
 init
 musl
-ncurses
-openssl
-bash
-curl
-lua
-lzip
-tree
-nano
-neofetch
-libevent
-tmux
-micro
 terminus-font
