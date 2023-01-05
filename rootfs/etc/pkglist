@@ -1,12 +1,13 @@
+base-filesystem
+busybox
+init
+musl
 ncurses
 openssl
-zlib
-libbzip2
 bash
 curl
 lua
 lzip
-file
 tree
 nano
 neofetch
