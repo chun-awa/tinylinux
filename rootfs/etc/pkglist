@@ -1,4 +1,3 @@
-base-filesystem
 busybox
 init
 musl
