@@ -4,7 +4,7 @@ if ! type -p qemu-system-x86_64 > /dev/null;then
     exit 1
 fi
 
-kernel=vmlinuz-4.9.330
+kernel=vmlinuz-5.10.162
 initrd=rootfs.cpio
 if [ -e /dev/kvm ];then
     kvm="-enable-kvm"
