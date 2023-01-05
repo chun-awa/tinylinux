@@ -1,4 +1,4 @@
-#!/bin/busybox sh
+#!/bin/sh
 RESET=$(printf "\033[0m")
 RED=$(printf "\033[91m")
 YELLOW=$(printf "\033[93m")
@@ -7,15 +7,6 @@ CYAN=$(printf "\033[96m")
 BLUE=$(printf "\033[94m")
 MAGENTA=$(printf "\033[95m")
 WHITE=$(printf "\033[97m")
-decompress(){
-    case "${1}" in
-        *.tbz|*.bz2) bzip2 -d ;;
-        *.lz)        lzip -dc ;;
-        *.tar)       cat      ;;
-        *.tgz|*.gz)  gzip -d  ;;
-        *.xz|*.txz)  xz -dc   ;;
-    esac<"${1}"
-}
 log(){
     echo "${WHITE}${1}${RESET}"
 }
@@ -26,7 +17,7 @@ log_info(){
 busybox dmesg -n 1
 log "Installing Busybox..."
 for i in $(busybox --list);do
-    busybox ln -s busybox /bin/$i
+    busybox ln -sf busybox /bin/$i
 done
 
 log "Mounting tmpfs..."
@@ -53,15 +44,9 @@ mount --bind /mnt/tmpfs/sys /sys
 log "Installing packages to new root..."
 cd /mnt/tmpfs
 printf "${MAGENTA}"
-for i in $(cat /etc/pkglist_core);do
-    decompress /var/packages/${i}.tar.*>/tmp/${i}.tar
-    tar -xf /tmp/${i}.tar
-    printf "$i "
-done
 for i in $(cat /etc/pkglist);do
     {
-        decompress /var/packages/${i}.tar.*>/tmp/${i}.tar
-        tar -xf /tmp/${i}.tar
+        tar -Jxf /var/packages/${i}.tar.*
         printf "$i "
     } &
 done
