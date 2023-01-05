@@ -3,4 +3,4 @@
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=chun-awa/linux&type=Date)](https://star-history.com/#chun-awa/linux&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=chun-awa/tinylinux&type=Date)](https://star-history.com/#chun-awa/tinylinux&Date)
