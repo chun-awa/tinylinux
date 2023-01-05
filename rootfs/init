@@ -1,4 +1,12 @@
 #!/bin/busybox sh
+RESET=$(printf "\033[0m")
+RED=$(printf "\033[91m")
+YELLOW=$(printf "\033[93m")
+GREEN=$(printf "\033[92m")
+CYAN=$(printf "\033[96m")
+BLUE=$(printf "\033[94m")
+MAGENTA=$(printf "\033[95m")
+WHITE=$(printf "\033[97m")
 decompress(){
     case "${1}" in
         *.tbz|*.bz2) bzip2 -d ;;
@@ -8,16 +16,22 @@ decompress(){
         *.xz|*.txz)  xz -dc   ;;
     esac<"${1}"
 }
+log(){
+    echo "${WHITE}${1}${RESET}"
+}
+log_info(){
+    echo "${CYAN}${1}${RESET}"
+}
 
 busybox dmesg -n 1
-echo "Installing Busybox..."
+log "Installing Busybox..."
 for i in $(busybox --list);do
     busybox ln -s busybox /bin/$i
 done
 
-echo "Mounting tmpfs..."
+log "Mounting tmpfs..."
 mount -t tmpfs -o defaults,size=512M tmpfs /mnt/tmpfs
-echo "Mounting pseudo filesystems..."
+log "Mounting pseudo filesystems..."
 mkdir /mnt/tmpfs/dev
 mkdir /mnt/tmpfs/proc
 mkdir /mnt/tmpfs/sys
@@ -36,23 +50,26 @@ mount --bind /mnt/tmpfs/dev /dev
 mount --bind /mnt/tmpfs/proc /proc
 mount --bind /mnt/tmpfs/sys /sys
 
-echo "Installing packages to new root..."
+log "Installing packages to new root..."
 cd /mnt/tmpfs
+printf "${MAGENTA}"
 for i in $(cat /etc/pkglist_core);do
     decompress /var/packages/${i}.tar.*>/tmp/${i}.tar
     tar -xf /tmp/${i}.tar
-    echo "$i done"
+    printf "$i "
 done
 for i in $(cat /etc/pkglist);do
     {
         decompress /var/packages/${i}.tar.*>/tmp/${i}.tar
         tar -xf /tmp/${i}.tar
-        echo "$i done"
+        printf "$i "
     } &
 done
 wait
+printf "${RESET}"
+echo
 
-echo "initramfs stage completed in $(cat /proc/uptime|cut -d ' ' -f 1)s"
+log "initramfs stage completed in $(cat /proc/uptime|cut -d ' ' -f 1)s"
 
-echo "Switching root..."
+log_info "Switching root..."
 exec switch_root /mnt/tmpfs /bin/busybox init
