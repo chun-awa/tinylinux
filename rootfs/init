@@ -21,8 +21,16 @@ for i in $(busybox --list);do
 done
 
 log "Mounting tmpfs..."
+mkdir -p /mnt/tmpfs
 mount -t tmpfs -o defaults,size=512M tmpfs /mnt/tmpfs
 log "Mounting pseudo filesystems..."
+mkdir -p /dev
+mkdir -p /proc
+mkdir -p /sys
+mount -t devtmpfs dev /dev
+mount -t proc proc /proc
+mount -t sysfs sys /sys
+
 mkdir /mnt/tmpfs/dev
 mkdir /mnt/tmpfs/proc
 mkdir /mnt/tmpfs/sys
@@ -32,14 +40,11 @@ mount -t sysfs sys /mnt/tmpfs/sys
 mkdir /mnt/tmpfs/dev/pts
 mkdir /mnt/tmpfs/dev/shm
 mount -t devpts devpts /mnt/tmpfs/dev/pts
-mount -t tmpfs tmpfs /mnt/tmpfs/dev/shm -o rw
+mount -t tmpfs tmpfs /mnt/tmpfs/dev/shm
 ln -s /proc/self/fd /mnt/tmpfs/dev/fd
 ln -s fd/0 /mnt/tmpfs/dev/stdin
 ln -s fd/1 /mnt/tmpfs/dev/stdout
 ln -s fd/2 /mnt/tmpfs/dev/stderr
-mount --bind /mnt/tmpfs/dev /dev
-mount --bind /mnt/tmpfs/proc /proc
-mount --bind /mnt/tmpfs/sys /sys
 
 log "Installing packages to new root..."
 cd /mnt/tmpfs
