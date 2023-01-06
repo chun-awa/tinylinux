@@ -21,6 +21,9 @@ for i in "${@}";do
         vga_ask)
             vga=ask
             ;;
+        efi)
+            efi="-drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF.fd"
+            ;;
         *)
             echo "Unknown option:${i}"
             exit 1
@@ -30,6 +33,7 @@ done
 cmdline+=" vga=${vga}"
 echo "Starting QEMU..."
 qemu-system-x86_64 ${kvm} \
+    ${efi} \
     -kernel "${kernel}" \
     -initrd "${initrd}" \
     -m "${memory}" \
