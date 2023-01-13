@@ -66,4 +66,4 @@ echo
 log "initramfs stage completed in $(cat /proc/uptime|cut -d ' ' -f 1)s"
 
 log_info "Switching root..."
-exec switch_root /mnt/tmpfs /bin/busybox init
+exec switch_root /mnt/tmpfs /bin/sinit
