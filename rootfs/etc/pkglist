@@ -2,3 +2,12 @@ busybox
 sinit
 init
 musl
+ncurses
+bash
+neofetch
+libevent
+tmux
+groff
+tcc
+vim
+nano
