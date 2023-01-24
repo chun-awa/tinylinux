@@ -3,6 +3,7 @@ sinit
 init
 musl
 ncurses
+gettext
 bash
 neofetch
 libevent
