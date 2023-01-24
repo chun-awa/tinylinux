@@ -4,11 +4,13 @@ init
 musl
 ncurses
 gettext
+readline
+util-linux
+eudev
 bash
 neofetch
 libevent
 tmux
-groff
 tcc
 vim
 nano
