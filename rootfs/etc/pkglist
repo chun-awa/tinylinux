@@ -13,4 +13,6 @@ libevent
 tmux
 tcc
 vim
+vim-molokai
+dotfiles
 nano
