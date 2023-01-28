@@ -24,6 +24,10 @@ for i in "${@}";do
         efi)
             efi="-drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF.fd"
             ;;
+        curses)
+            display="-display curses"
+            vga=0xf00
+            ;;
         *)
             echo "Unknown option:${i}"
             exit 1
@@ -39,3 +43,4 @@ qemu-system-x86_64 ${kvm} \
     -m "${memory}" \
     -append "${cmdline}" \
     -smp "${smp}" \
+    ${display}
