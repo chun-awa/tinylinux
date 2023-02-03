@@ -43,4 +43,6 @@ qemu-system-x86_64 ${kvm} \
     -m "${memory}" \
     -append "${cmdline}" \
     -smp "${smp}" \
-    ${display}
+    ${display} \
+    -audiodev sdl,id=audio,in.voices=0 \
+    -device ac97,audiodev=audio
