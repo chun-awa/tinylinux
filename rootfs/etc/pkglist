@@ -5,14 +5,9 @@ musl
 ncurses
 gettext
 readline
-util-linux
-eudev
 bash
 neofetch
 libevent
 tmux
 tcc
-vim
-vim-molokai
-dotfiles
 nano
