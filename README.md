@@ -2,5 +2,4 @@
 A tiny linux initramfs based on [busybox](https://busybox.net/) and [musl libc](https://musl.libc.org/).
 
 ## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=chun-awa/tinylinux&type=Date)](https://star-history.com/#chun-awa/tinylinux&Date)
+[![Stargazers over time](https://starchart.cc/chun-awa/tinylinux.svg?variant=adaptive)](https://starchart.cc/chun-awa/tinylinux)
