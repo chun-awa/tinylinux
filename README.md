@@ -1,5 +1,5 @@
 # tinylinux
-A tiny linux initramfs based on [busybox](https://busybox.net/) and [musl libc](https://musl.libc.org/)  
+A tiny linux initramfs based on [busybox](https://busybox.net/) and [musl libc](https://musl.libc.org/).
 
 ## Star History
 
