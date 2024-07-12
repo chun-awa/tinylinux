@@ -22,7 +22,7 @@ jobs:
     - name: Download kernel source
       run: |
         KERNEL_VERSION=6.6.39
-        wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-${KERNEL_VERSION}.tar.xz
+        wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${KERNEL_VERSION}.tar.xz
         tar -xf linux-${KERNEL_VERSION}.tar.xz
         cd linux-${KERNEL_VERSION}
       
