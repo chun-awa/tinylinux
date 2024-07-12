@@ -19,25 +19,14 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential libncurses-dev bison flex libssl-dev libelf-dev
 
-    - name: Download kernel source
+    - name: Compile Kernel
       run: |
         KERNEL_VERSION=6.6.39
         wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${KERNEL_VERSION}.tar.xz
         tar -xf linux-${KERNEL_VERSION}.tar.xz
         cd linux-${KERNEL_VERSION}
-      
-    - name: Configure kernel
-      run: |
-        cd linux-${KERNEL_VERSION}
         make defconfig
-
-    - name: Compile kernel
-      run: |
-        cd linux-${KERNEL_VERSION}
         make -j$(nproc)
-
-    - name: Archive kernel
-      run: |
         cd linux-${KERNEL_VERSION}
         tar -czf ../linux-kernel.tar.gz .
       continue-on-error: true
