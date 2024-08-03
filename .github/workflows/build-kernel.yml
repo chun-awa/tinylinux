@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
     - name: Set up dependencies
       run: |
         sudo apt-get update
@@ -24,15 +21,14 @@ jobs:
         KERNEL_VERSION=6.6.39
         wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-${KERNEL_VERSION}.tar.xz
         tar -xf linux-${KERNEL_VERSION}.tar.xz
-        cd linux-${KERNEL_VERSION}
+        pushd linux-${KERNEL_VERSION}
         make defconfig
         make -j$(nproc)
-        cd linux-${KERNEL_VERSION}
-        tar -czf ../linux-kernel.tar.gz .
-      continue-on-error: true
+        cp arch/x86/bzImage ../vmlinuz
+        popd
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-        name: linux-kernel
-        path: linux-kernel.tar.gz
+        name: vmlinuz
+        path: vmlinuz
