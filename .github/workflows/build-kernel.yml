@@ -24,7 +24,7 @@ jobs:
         pushd linux-${KERNEL_VERSION}
         make defconfig
         make -j$(nproc)
-        cp arch/x86/bzImage ../vmlinuz
+        cp arch/x86/boot/bzImage ../vmlinuz
         popd
 
     - name: Upload artifact
