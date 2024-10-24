@@ -29,7 +29,7 @@ for i in "${@}";do
             vga=0xf00
             ;;
         *)
-            echo "Unknown option:${i}"
+            echo "Unknown option: ${i}"
             exit 1
             ;;
     esac
